@@ -1,0 +1,546 @@
+/* Habit Table Styles */
+.habit-table-container {
+  background: #f5f5f5;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.year-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 15px;
+  background: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.year-navigation h2 {
+  color: #333;
+  font-size: 24px;
+  min-width: 200px;
+  text-align: center;
+  margin: 0;
+}
+
+.year-navigation button {
+  padding: 10px 20px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.year-navigation button:hover {
+  background: #764ba2;
+}
+
+/* Month Filter Section */
+.month-filter-section {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+  padding: 20px;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  gap: 15px;
+}
+
+.filter-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-btn {
+  padding: 6px 14px;
+  border: 1px solid #667eea;
+  background: white;
+  color: #667eea;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  background: #667eea;
+  color: white;
+}
+
+.filter-btn.select-all {
+  background: #4caf50;
+  border-color: #4caf50;
+  color: white;
+}
+
+.filter-btn.select-all:hover {
+  background: #45a049;
+  border-color: #45a049;
+}
+
+.filter-btn.clear-all {
+  background: #f44336;
+  border-color: #f44336;
+  color: white;
+}
+
+.filter-btn.clear-all:hover {
+  background: #da190b;
+  border-color: #da190b;
+}
+
+.month-selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 10px;
+}
+
+.month-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.month-checkbox input {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.month-label {
+  display: inline-block;
+  padding: 8px 12px;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  background: #f9f9f9;
+  color: #666;
+  font-weight: 600;
+  font-size: 13px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.month-label:hover {
+  border-color: #667eea;
+  background: #f0f2ff;
+}
+
+.month-checkbox input:checked + .month-label,
+.month-label.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #667eea;
+}
+
+.no-months-message {
+  background: white;
+  border-radius: 10px;
+  padding: 40px 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+}
+
+.no-months-message p {
+  color: #999;
+  font-size: 16px;
+  margin: 0;
+}
+.month-table-section {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+  overflow: hidden;
+}
+
+.month-title {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.month-title h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.month-stats {
+  display: flex;
+  gap: 10px;
+}
+
+.month-percentage {
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.month-percentage.fit {
+  background: #4caf50;
+  color: white;
+}
+
+.month-percentage.unfit {
+  background: #f44336;
+  color: white;
+}
+
+.month-table-wrapper {
+  overflow-x: auto;
+  padding: 15px;
+}
+
+.month-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.month-table thead {
+  background: #f9f9f9;
+}
+
+.month-table th {
+  padding: 8px 4px;
+  text-align: center;
+  font-weight: 600;
+  border-bottom: 2px solid #667eea;
+  color: #333;
+}
+
+.habit-name-col {
+  text-align: left;
+  width: 130px;
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background: #f9f9f9;
+  border-right: 2px solid #667eea;
+}
+
+.day-header {
+  min-width: 50px;
+  padding: 6px 4px !important;
+}
+
+.day-number {
+  font-weight: 700;
+  color: #667eea;
+  font-size: 13px;
+}
+
+.day-name {
+  font-size: 10px;
+  color: #999;
+  margin-top: 2px;
+}
+
+.habit-table tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+  transition: background 0.2s;
+}
+
+.habit-table tbody tr:hover {
+  background: #f5f5f5;
+}
+
+.habit-row {
+  height: auto;
+}
+
+.habit-name {
+  padding: 10px;
+  text-align: left;
+  position: sticky;
+  left: 0;
+  background: white;
+  z-index: 9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  border-right: 1px solid #e0e0e0;
+}
+
+.habit-name span {
+  flex: 1;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+
+.day-cell,
+.empty-day-cell {
+  padding: 4px 2px;
+  text-align: center;
+  border: 1px solid #f0f0f0;
+  min-width: 50px;
+  height: 40px;
+}
+
+.day-cell {
+  vertical-align: middle;
+}
+
+.day-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 100%;
+}
+
+.day-checkbox-wrapper input {
+  display: none;
+}
+
+.day-checkbox-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  font-size: 14px;
+  color: #999;
+  transition: all 0.2s;
+}
+
+.day-checkbox-wrapper input:checked + .day-checkbox-mark {
+  background: #4caf50;
+  border-color: #4caf50;
+  color: white;
+  font-weight: 700;
+}
+
+.day-checkbox-wrapper input:disabled + .day-checkbox-mark {
+  background: #f9f9f9;
+  color: #ccc;
+  cursor: not-allowed;
+  border-color: #eee;
+}
+
+/* Statistics Rows */
+.stats-row {
+  font-weight: 600;
+  background: #f9f9f9;
+  height: 50px;
+}
+
+.daily-row,
+.monthly-row {
+  border-top: 2px solid #667eea;
+}
+
+.weekly-row {
+  border-top: 2px solid #667eea;
+}
+
+.status-row {
+  border-top: 2px solid #667eea;
+}
+
+.stats-label {
+  padding: 10px 12px;
+  text-align: left;
+  position: sticky;
+  left: 0;
+  background: #f9f9f9;
+  z-index: 9;
+  font-weight: 600;
+  color: #333;
+}
+
+.stats-cell {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  min-width: 140px;
+}
+
+.daily-stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+}
+
+/* Statistics Rows */
+.stats-row {
+  font-weight: 600;
+  background: #f9f9f9;
+  border-top: 2px solid #667eea;
+}
+
+.stats-label {
+  padding: 10px;
+  text-align: left;
+  position: sticky;
+  left: 0;
+  background: #f9f9f9;
+  z-index: 9;
+  font-weight: 600;
+  color: #333;
+  border-right: 1px solid #e0e0e0;
+}
+
+.stats-cell {
+  padding: 8px 4px;
+  text-align: center;
+  border: 1px solid #f0f0f0;
+  min-width: 50px;
+}
+
+.daily-percent {
+  background: #e8f4f8;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  color: #0066cc;
+  font-size: 12px;
+  display: inline-block;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .month-table {
+    font-size: 11px;
+  }
+
+  .day-header {
+    min-width: 45px;
+  }
+
+  .habit-name-col {
+    width: 110px;
+  }
+
+  .day-checkbox-mark {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .year-navigation {
+    flex-direction: column;
+  }
+
+  .year-navigation h2 {
+    min-width: auto;
+  }
+
+  .filter-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .month-selector {
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 8px;
+  }
+
+  .month-label {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+
+  .month-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .month-table {
+    font-size: 10px;
+  }
+
+  .day-header {
+    min-width: 40px;
+    padding: 4px 2px !important;
+  }
+
+  .day-number {
+    font-size: 11px;
+  }
+
+  .day-name {
+    font-size: 8px;
+  }
+
+  .habit-name-col {
+    width: 100px;
+  }
+
+  .habit-name {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .delete-btn {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+
+  .day-checkbox-mark {
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+  }
+}
