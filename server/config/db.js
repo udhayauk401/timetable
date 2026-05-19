@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const connectDB = async () => {
   try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/habit-tracker';
+    const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://timetable:udhaya1234!@cluster0.kvb0okz.mongodb.net/';
     
     const conn = await mongoose.connect(mongoUri, {
       useNewUrlParser: true,
