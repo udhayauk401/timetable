@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:5001/api';
+// Use the same host as frontend, so it works on network too
+const API_URL = `http://${window.location.hostname}:5001/api`;
 
 // Public endpoints that don't require authentication
 const publicEndpoints = ['/auth/login', '/auth/register'];
