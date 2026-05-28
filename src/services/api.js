@@ -1,5 +1,7 @@
-// Use the same host as frontend, so it works on network too
-const API_URL = `http://${window.location.hostname}:5001/api`;
+// Use environment variable for API URL
+// For Vercel: reads from .env → VITE_API_URL
+// For local dev: fallback to localhost:5001
+const API_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:5001/api`;
 
 // Public endpoints that don't require authentication
 const publicEndpoints = ['/auth/login', '/auth/register'];
