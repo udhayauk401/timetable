@@ -2,25 +2,17 @@
 
 ## Prerequisites
 - ✅ Node.js 16+ installed
-- ✅ MongoDB running (see MONGODB_SETUP.md)
 - ✅ Port 5000 and 5173 available
 
 ## Step 1: Configure Backend
 
-Edit `server/.env` and add your MongoDB connection:
+Edit `server/.env` with:
 
 ```env
 PORT=5000
 NODE_ENV=development
-MONGODB_URI=mongodb://localhost:27017/habit-tracker
 JWT_SECRET=your_super_secret_jwt_key_change_this_in_production_12345
 JWT_EXPIRE=7d
-CORS_ORIGIN=http://localhost:5173
-```
-
-**For MongoDB Atlas** (cloud):
-```
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/habit-tracker?retryWrites=true&w=majority
 ```
 
 ## Step 2: Configure Frontend

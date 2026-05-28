@@ -1,29 +1,29 @@
-# 🚀 MongoDB Migration Complete!
+# 🚀 MongoDB Removal Complete!
 
-Your Daily Routine & Attendance Tracker has been successfully migrated from Firebase to MongoDB with Express.js backend and JWT authentication!
+Your Daily Routine & Attendance Tracker has been successfully updated from MongoDB to in-memory data storage!
 
 ## 📁 Project Structure
 
 ```
-time table/
+timetable/
 ├── src/                          # React Frontend
 │   ├── components/
 │   │   ├── LoginPage.jsx        # Updated for API auth
 │   │   ├── Dashboard.jsx        # Updated for API calls
-│   │   ├── HabitTable.jsx       # Updated for MongoDB data
+│   │   ├── HabitTable.jsx       # Updated for API data
 │   │   └── WeekColumn.jsx       # Updated for date-based attendance
 │   ├── services/
-│   │   └── api.js               # NEW: API service for MongoDB
+│   │   └── api.js               # API service for backend
 │   ├── styles/
 │   ├── App.jsx                  # Updated for localStorage auth
 │   └── main.jsx
-├── server/                       # NEW: Express.js Backend
-│   ├── config/
-│   │   └── db.js               # MongoDB connection
+├── server/                       # Express.js Backend
+│   ├── db/
+│   │   └── memoryDB.js         # NEW: In-memory database
 │   ├── models/
-│   │   ├── User.js             # User schema with bcrypt
-│   │   ├── Habit.js            # Habit schema
-│   │   └── Attendance.js       # Attendance tracking schema
+│   │   ├── User.js             # User model (in-memory)
+│   │   ├── Habit.js            # Habit model (in-memory)
+│   │   └── Attendance.js       # Attendance model (in-memory)
 │   ├── routes/
 │   │   ├── auth.js             # Authentication endpoints
 │   │   ├── habits.js           # Habit CRUD endpoints
@@ -33,8 +33,7 @@ time table/
 │   ├── server.js               # Express app entry point
 │   ├── package.json
 │   └── .env                    # Server environment config
-├── .env.local                   # Frontend environment config
-├── MONGODB_SETUP.md            # Detailed MongoDB setup guide
+├── .env                         # Server environment config
 ├── README.md                   # Project documentation
 ├── QUICK_START.md              # Quick start guide
 └── package.json
@@ -43,41 +42,40 @@ time table/
 ## ✨ What Changed
 
 ### Removed
-- ❌ Firebase Authentication
-- ❌ Firestore Database
-- ❌ `src/firebase.js`
+- ❌ MongoDB/Mongoose dependency
+- ❌ Database connection configuration
+- ❌ MONGODB_SETUP.md guide
+- ❌ `server/config/db.js` (no longer needed)
 
-### Added
 - ✅ Express.js Backend Server
-- ✅ MongoDB Database
+- ✅ In-Memory Data Storage
 - ✅ JWT Authentication
 - ✅ API Service Layer
-- ✅ Mongoose Models
 - ✅ RESTful API Endpoints
 
 ### Updated
 - 🔄 All components to use API calls
 - 🔄 Authentication to use localStorage + JWT
-- 🔄 Data structure to work with MongoDB
+- 🔄 Models to use in-memory data instead of MongoDB
+- 🔄 Dependencies (removed mongoose)
 
 ## 🔧 Quick Start
 
 ### Prerequisites
 - Node.js 16+ installed
-- MongoDB running (local or Atlas)
 
-### Step 1: Set Up MongoDB
-See `MONGODB_SETUP.md` for detailed instructions.
-
-Get your connection string and add to `server/.env`:
-```
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/habit-tracker
-```
-
-### Step 2: Install Backend Dependencies
+### Step 1: Install Backend Dependencies
 ```bash
 cd server
 npm install
+```
+
+### Step 2: Configure Environment Variables
+Create `server/.env` with:
+```
+PORT=5000
+JWT_SECRET=your_secret_key_here
+JWT_EXPIRE=7d
 ```
 
 ### Step 3: Start Backend Server
@@ -103,40 +101,48 @@ npm run dev
 - Create account or login
 - Start tracking habits!
 
-## 📚 Database Schema
+## 💾 In-Memory Data Storage
 
-### Users Collection
+The application now uses an in-memory database (`server/db/memoryDB.js`) instead of MongoDB. This is ideal for:
+- 🎓 Learning and development
+- 🧪 Testing
+- 📱 Prototyping
+
+**Note**: Data is stored in server memory and will be lost when the server restarts.
+
+### Data Models (In-Memory)
+
+#### Users
 ```javascript
 {
-  _id: ObjectId,
+  _id: String (unique ID),
   email: String (unique),
   password: String (hashed with bcrypt),
   createdAt: Date
 }
 ```
 
-### Habits Collection
+#### Habits
 ```javascript
 {
-  _id: ObjectId,
-  userId: ObjectId (reference to User),
+  _id: String (unique ID),
+  userId: String (reference to User),
   name: String,
   createdAt: Date
 }
 ```
 
-### Attendance Collection
+#### Attendance
 ```javascript
 {
-  _id: ObjectId,
-  userId: ObjectId,
-  habitId: ObjectId (reference to Habit),
+  _id: String (unique ID),
+  userId: String,
+  habitId: String (reference to Habit),
   date: Date,
   completed: Boolean,
   createdAt: Date
 }
 ```
-Unique index on: `{userId, habitId, date}`
 
 ## 🔐 Authentication Flow
 
@@ -191,14 +197,9 @@ GET    /api/attendance/stats/:habitId/:year/:month    - Get statistics
 
 ### Backend (.env)
 ```
-MONGODB_URI=your_connection_string
+PORT=5000
 JWT_SECRET=change_this_in_production
-CORS_ORIGIN=http://localhost:5173
-```
-
-### Frontend (.env.local)
-```
-VITE_API_URL=http://localhost:5000/api
+JWT_EXPIRE=7d
 ```
 
 ## 📝 Running Commands
@@ -220,13 +221,12 @@ npm run build  # Build for production
 
 ## ⚠️ Common Issues & Solutions
 
-### MongoDB Connection Failed
-- Check connection string in `server/.env`
-- Ensure MongoDB service is running
-- Verify IP whitelist in MongoDB Atlas (if using cloud)
+### Port Already in Use
+- Change PORT in `.env`
+- Kill existing process: `lsof -ti:5000 | xargs kill -9`
 
 ### CORS Error
-- Verify `CORS_ORIGIN` matches frontend URL
+- Verify frontend URL matches CORS settings
 - Check frontend is sending requests to correct API URL
 
 ### Token Not Saved
@@ -234,9 +234,10 @@ npm run build  # Build for production
 - Verify response includes token
 - Check localStorage isn't blocked
 
-### Port Already in Use
-- Change PORT in `.env`
-- Kill existing process: `lsof -ti:5000 | xargs kill -9`
+### Data Lost After Restart
+- This is expected behavior with in-memory storage
+- Re-register users after server restart
+- Consider migrating to MongoDB for production
 
 ## 🎯 Next Steps
 
@@ -250,32 +251,33 @@ npm run build  # Build for production
    - Add password reset feature
    - Implement email verification
 
-3. **Deployment**
+3. **Production Deployment**
+   - Migrate to MongoDB or another persistent database
    - Deploy backend to Heroku/Railway/Render
    - Deploy frontend to Vercel/Netlify
-   - Use production MongoDB Atlas URL
-   - Update CORS and environment variables
+   - Update environment variables for production
 
 ## 📚 Documentation
 
-- **MONGODB_SETUP.md** - Detailed MongoDB setup
 - **README.md** - Full project documentation
 - **QUICK_START.md** - Quick start guide
 - **FEATURES.md** - Feature list
+- **server/db/memoryDB.js** - In-memory database implementation
 
 ## 🆘 Support
 
-For detailed setup instructions, see:
-- `MONGODB_SETUP.md` - Database configuration
-- `README.md` - Full documentation
-- Server console logs - API debugging
+For help:
+- Check server console logs for API errors
+- Review browser console for client-side issues
+- Verify `.env` configuration matches your setup
+- Ensure both frontend and backend servers are running
 
 ---
 
 **Happy coding! 🚀**
 
 Your app now uses:
-- ✅ MongoDB for data storage
+- ✅ In-Memory Data Storage (development friendly)
 - ✅ Express.js for backend API
 - ✅ JWT for authentication
 - ✅ Bcrypt for password security

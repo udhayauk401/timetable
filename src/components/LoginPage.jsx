@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authAPI } from '../services/api';
 import '../styles/LoginPage.css';
@@ -11,6 +11,14 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Check if already logged in, redirect to dashboard
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/dashboard');
+    }
+  }, [navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -19,20 +27,26 @@ export default function LoginPage() {
     try {
       let response;
       if (isSignUp) {
-        response = await authAPI.register(email, password);
+        response = await authAPI.register({ email, password });
       } else {
-        response = await authAPI.login(email, password);
+        response = await authAPI.login({ email, password });
       }
+
+      console.log('API Response:', response);
 
       if (response.success && response.token) {
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
         navigate('/dashboard');
       } else {
-        setError(response.message || 'Authentication failed');
+        const errorMsg = response.message || 'Authentication failed';
+        setError(errorMsg);
+        console.error('Auth failed:', errorMsg);
       }
     } catch (err) {
-      setError(err.message || 'An error occurred. Please try again.');
+      const errorMsg = err.message || 'An error occurred. Please try again.';
+      setError(errorMsg);
+      console.error('Auth error:', err);
     } finally {
       setLoading(false);
     }
@@ -64,6 +78,7 @@ export default function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               required
+              autoComplete="current-password"
             />
           </div>
 

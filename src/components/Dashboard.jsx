@@ -25,13 +25,16 @@ export default function Dashboard() {
   const loadHabits = async () => {
     try {
       setLoading(true);
-      const response = await habitsAPI.getAll();
+      console.log('Loading habits...');
+      const response = await habitsAPI.getHabits();
+      console.log('Habits response:', response);
       if (response.success) {
         setHabits(response.habits || []);
       } else {
         setError(response.message);
       }
     } catch (err) {
+      console.error('Error loading habits:', err);
       setError(err.message);
       if (err.message.includes('401')) {
         localStorage.removeItem('token');
@@ -45,7 +48,7 @@ export default function Dashboard() {
   const addHabit = async () => {
     if (newHabit.trim()) {
       try {
-        const response = await habitsAPI.create(newHabit);
+        const response = await habitsAPI.createHabit({ name: newHabit });
         if (response.success) {
           setHabits([...habits, response.habit]);
           setNewHabit('');
@@ -61,7 +64,7 @@ export default function Dashboard() {
 
   const deleteHabit = async (habitId) => {
     try {
-      const response = await habitsAPI.delete(habitId);
+      const response = await habitsAPI.deleteHabit(habitId);
       if (response.success) {
         setHabits(habits.filter(h => h._id !== habitId));
       } else {

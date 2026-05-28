@@ -51,7 +51,11 @@ export default function HabitTable({ habits, onDeleteHabit }) {
       const record = records.find(r => new Date(r.date).toDateString() === date.toDateString());
       const completed = record ? !record.completed : true;
 
-      const response = await attendanceAPI.toggle(habitId, date.toISOString().split('T')[0], completed);
+      const response = await attendanceAPI.toggle({
+        habitId,
+        date: date.toISOString().split('T')[0],
+        completed
+      });
 
       if (response.success) {
         // Update local state

@@ -5,6 +5,46 @@ import protect from '../middleware/auth.js';
 
 const router = express.Router();
 
+// @route   GET /api/attendance/stats/:habitId/:year/:month
+// @desc    Get attendance statistics for a habit
+// @access  Private
+router.get('/stats/:habitId/:year/:month', protect, async (req, res) => {
+  try {
+    const { habitId, year, month } = req.params;
+
+    // Verify user owns this habit
+    const habit = await Habit.findById(habitId);
+    if (!habit || habit.userId.toString() !== req.user.id) {
+      return res.status(403).json({ success: false, message: 'Not authorized' });
+    }
+
+    const startDate = new Date(year, month - 1, 1);
+    const endDate = new Date(year, month, 0);
+
+    const totalDays = endDate.getDate();
+    const completed = await Attendance.countDocuments({
+      userId: req.user.id,
+      habitId,
+      date: { $gte: startDate, $lte: endDate },
+      completed: true
+    });
+
+    const percentage = totalDays > 0 ? Math.round((completed / totalDays) * 100) : 0;
+
+    res.status(200).json({
+      success: true,
+      stats: {
+        totalDays,
+        completed,
+        percentage,
+        status: percentage >= 70 ? 'FIT' : 'UNFIT'
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // @route   GET /api/attendance/:habitId/:year/:month
 // @desc    Get attendance records for a habit in a month
 // @access  Private
@@ -81,46 +121,6 @@ router.post('/', protect, async (req, res) => {
     res.status(200).json({
       success: true,
       record
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-});
-
-// @route   GET /api/attendance/stats/:habitId/:year/:month
-// @desc    Get attendance statistics for a habit
-// @access  Private
-router.get('/stats/:habitId/:year/:month', protect, async (req, res) => {
-  try {
-    const { habitId, year, month } = req.params;
-
-    // Verify user owns this habit
-    const habit = await Habit.findById(habitId);
-    if (!habit || habit.userId.toString() !== req.user.id) {
-      return res.status(403).json({ success: false, message: 'Not authorized' });
-    }
-
-    const startDate = new Date(year, month - 1, 1);
-    const endDate = new Date(year, month, 0);
-
-    const totalDays = endDate.getDate();
-    const completed = await Attendance.countDocuments({
-      userId: req.user.id,
-      habitId,
-      date: { $gte: startDate, $lte: endDate },
-      completed: true
-    });
-
-    const percentage = totalDays > 0 ? Math.round((completed / totalDays) * 100) : 0;
-
-    res.status(200).json({
-      success: true,
-      stats: {
-        totalDays,
-        completed,
-        percentage,
-        status: percentage >= 70 ? 'FIT' : 'UNFIT'
-      }
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

@@ -1,53 +1,51 @@
-# MongoDB Setup & Backend Configuration
+# ⚠️ MongoDB Setup - DEPRECATED
 
-## Option 1: MongoDB Atlas (Cloud - Recommended)
+This file is **no longer needed**. MongoDB has been removed from this project and replaced with in-memory data storage.
 
-### Step 1: Create MongoDB Atlas Account
-1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Click "Try Free"
-3. Create an account or sign in
+## What Changed?
 
-### Step 2: Create a Cluster
-1. Click "Build a Database"
-2. Select "M0 Free" (free tier)
-3. Choose your cloud provider and region
-4. Click "Create Deployment"
+- ✅ **Removed**: MongoDB/Mongoose dependency
+- ✅ **Added**: In-memory database (`server/db/memoryDB.js`)
+- ✅ **Removed**: Database connection configuration
+- ✅ **Simplified**: No external database required
 
-### Step 3: Set Up Database Access
-1. Go to "Database Access"
-2. Click "Add New Database User"
-3. Create username and password
-4. Choose "Built-in Role: Atlas admin"
-5. Click "Add User"
+## Current Setup
 
-### Step 4: Get Connection String
-1. Go to "Databases"
-2. Click "Connect" on your cluster
-3. Select "Drivers" → "Node.js"
-4. Copy the connection string
-5. Replace `<password>` with your actual password
+Your application now uses an in-memory database for development and testing. This is much simpler to set up!
 
-### Step 5: Update .env
-In `server/.env`, update:
+### For Development
+- No database setup required
+- Just run `npm install` and `npm run dev`
+- Data is stored in server memory
+
+### For Production
+If you need persistent data storage, consider:
+1. **MongoDB** - See archived MongoDB docs
+2. **PostgreSQL** - Open source relational database
+3. **Firebase** - NoSQL cloud database
+4. **Supabase** - PostgreSQL with easy setup
+5. **Any other database** - Replace the `memoryDB.js` with your choice
+
+## Quick Start
+
+```bash
+# 1. Install dependencies
+cd server
+npm install
+
+# 2. Configure .env
+echo "PORT=5000" > .env
+echo "JWT_SECRET=your_secret_key" >> .env
+
+# 3. Start server
+npm run dev
 ```
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/habit-tracker?retryWrites=true&w=majority
-```
+
+See `MIGRATION_GUIDE.md` for full setup instructions.
 
 ---
 
-## Option 2: Local MongoDB
-
-### Step 1: Install MongoDB
-- **Windows**: Download from [MongoDB Community Server](https://www.mongodb.com/try/download/community)
-- **Mac**: `brew install mongodb-community`
-- **Linux**: Follow [official guide](https://docs.mongodb.com/manual/installation/)
-
-### Step 2: Start MongoDB Service
-```bash
-# Windows
-net start MongoDB
-
-# Mac
+**Note**: This file is kept for historical reference. The project no longer uses MongoDB.
 brew services start mongodb-community
 
 # Linux
