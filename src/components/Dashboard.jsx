@@ -20,7 +20,7 @@ export default function Dashboard() {
     }
 
     loadHabits();
-  }, [navigate]);
+  }, []);
 
   const loadHabits = async () => {
     try {
